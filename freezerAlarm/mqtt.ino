@@ -57,11 +57,9 @@ void mqttConnect() {
       Serial.println(F("connected"));
 
       //Subscriptions:
-      /*
-        client.subscribe(cmndTopic);
-        Serial.print(F("Subscribing to "));
-        Serial.println(cmndTopic);
-      */
+      client.subscribe(cmndTopic);
+      Serial.print(F("Subscribing to "));
+      Serial.println(cmndTopic);
     } else {
       Serial.print(F("failed, rc="));
       Serial.print(client.state());

@@ -10,6 +10,8 @@
      Temperatures are also published on MQTT:
        fahrenheightTopic= freezer/temp/f
        centigradeTopic= freezer/temp/c
+     V2.0 - working save
+     
 
 */
 
@@ -48,6 +50,7 @@ const int mqttPort = 1883;
 OneWire  ds(D4);                                      // ds18b20 on pin D4
 SSD1306Wire  display(0x3c, D2, D1);                   // I2C address and pins for Wemos D1 Mini (0x3c,sda,scl, geometry)
 //                                                    // Geometry =0 for 128x64 (default), =1 for 128x32
+//SSD1306Wire display(0x3c, D2, D1, GEOMETRY_64_48 ); // WEMOS OLED shield
 
 
 #define DEBUG true  //set to true for debug output, false for no debug ouput
@@ -84,7 +87,6 @@ void setup(void) {
 
   display.clear();                                      // clear the display
   display.setTextAlignment(TEXT_ALIGN_LEFT);
-  //display.drawString(0, 0, "ds18b20-mqtt.ino");
   display.drawString(0, 0, SKETCH_NAME);
   display.display();
   delay(3000);
