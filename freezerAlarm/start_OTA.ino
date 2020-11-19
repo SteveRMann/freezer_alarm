@@ -8,15 +8,17 @@ void start_OTA() {
 
   //Hostname defaults to esp8266 - [MAC address]
   //ArduinoOTA.setHostname("tree_02");
+  ArduinoOTA.setHostname(hostName);
+
   ArduinoOTA.onStart([]() {
     String type;
     if (ArduinoOTA.getCommand() == U_FLASH) {
       type = "sketch";
-    } else { // U_SPIFFS
+    } else { //U_SPIFFS
       type = "filesystem";
     }
 
-    // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
+    //NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
     Serial.println("Start updating " + type);
   });
   ArduinoOTA.onEnd([]() {
@@ -40,7 +42,6 @@ void start_OTA() {
     }
   });
   ArduinoOTA.begin();
-  Serial.println("Ready");
-  Serial.print("IP address: ");
+  Serial.println("OTA Ready at IP address: ");
   Serial.println(WiFi.localIP());
 }

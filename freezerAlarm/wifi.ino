@@ -1,25 +1,25 @@
-// setup_wifi
-// ============================= Connect the ESP to the router =============================
-// Connect to WiFi network so we can reach the MQTT broker and publish messages to topics.
+//setup_wifi
+//============================= Connect the ESP to the router =============================
+//Connect to WiFi network so we can reach the MQTT broker and publish messages to topics.
 
 /*
   Make sure you include at the start of the sketch:
   #define HOSTPREFIX "CGM-"
-  #include "ESP8266WiFi.h"   // Not needed if also using the Arduino OTA Library...
+  #include "ESP8266WiFi.h"   //Not needed if also using the Arduino OTA Library...
   #include "D:\River Documents\Arduino\libraries\Kaywinnet.h"  \\ WiFi credentials
 
   If using the OTA Library, put these at the start of the sketch.
-  // setup_wifi vars
-  char macBuffer[24];       // Holds the last three digits of the MAC, in hex.
+  //setup_wifi vars
+  char macBuffer[24];       //Holds the last three digits of the MAC, in hex.
   char hostNamePrefix[] = HOSTPREFIX;
-  char hostName[24];        // Holds hostNamePrefix + the last three bytes of the MAC address.
+  char hostName[24];        //Holds hostNamePrefix + the last three bytes of the MAC address.
 */
 
 void setup_wifi() {
 #ifndef Kaywinnet
 #include "D:\River Documents\Arduino\libraries\kaywinnet.h"
 #endif
-  byte mac[6];                     //// the MAC address of your Wifi shield
+  byte mac[6];                     ////the MAC address of your Wifi shield
 
   Serial.println(F("\n"));
   Serial.print(F("Connecting to "));
@@ -40,12 +40,12 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 
 
-  // Get the last three numbers of the mac address.
-  // "4C:11:AE:0D:83:86" becomes "0D8386" in macBuffer.
+  //Get the last three numbers of the mac address.
+  //"4C:11:AE:0D:83:86" becomes "0D8386" in macBuffer.
   WiFi.macAddress(mac);
   snprintf(macBuffer, sizeof(macBuffer), "%02X%02X%02X", mac[3], mac[4], mac[5]);
 
-  // Build hostName from hostNamePrefix + last three bytes of the MAC address.
+  //Build hostName from hostNamePrefix + last three bytes of the MAC address.
   strcpy(hostName, hostNamePrefix);
   strcat(hostName, "-");
   strcat(hostName, macBuffer);
@@ -77,7 +77,7 @@ String macToStr(const uint8_t* mac) {
     else {
       result += String(mac[i], 16);
     }
-    if (i < 5)  // Add a colon between hex duplets
+    if (i < 5)  //Add a colon between hex duplets
       result += ':';
   }
   return result;
@@ -93,10 +93,10 @@ String macToStr(const uint8_t* mac) {
 
     if (client.connect(hostName))  {            //hostName is built in setup_wifi()
       Serial.print(F("connected, "));
-  //      Serial.println(F("Subscribed to:"));
-  //      Serial.println(cmdTopic);
+  //     Serial.println(F("Subscribed to:"));
+  //     Serial.println(cmdTopic);
 
-  //      client.subscribe(unlockTopic);
+  //     client.subscribe(unlockTopic);
     }
     else {
       Serial.print(F("failed, rc= "));
