@@ -1,4 +1,4 @@
-# Telephone .gitignore file
+######## Ignore list for arduino projects ########
 
 *.tmp
 *.psd
