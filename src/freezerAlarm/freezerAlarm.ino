@@ -85,7 +85,7 @@ void redToggle() {
 
 
 //=================================== setup() ===================================
-void setup(void) {
+void setup() {
   pinMode(BLUE_LED, OUTPUT);
   pinMode(RED_LED, OUTPUT);
 
@@ -135,9 +135,8 @@ void setup(void) {
   //Turn off the LEDS
   digitalWrite(BLUE_LED, LEDOFF);
   digitalWrite(RED_LED, LEDOFF);
-
-
 }
+
 
 
 //==================================== loop() ====================================
