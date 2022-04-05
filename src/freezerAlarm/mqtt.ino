@@ -87,7 +87,7 @@ void callback(String topic, byte * message, unsigned int length) {
 
   //Convert the character array to a string
   String messageString;
-  for (int i = 0; i < length; i++) {
+  for (unsigned int i = 0; i < length; i++) {
     messageString += (char)message[i];
   }
   messageString.trim();
