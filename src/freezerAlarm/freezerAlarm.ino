@@ -1,7 +1,7 @@
 #define SKETCH_NAME "freezerAlarm.ino"
 #define SKETCH_VERSION "2.3"
-#define NODENAME "fridge1"          //Give this node a unique name, 5 char max?
-//Freezer in basement, fridge1 in Kitchen
+#define NODENAME "fridge2"          //Give this node a unique name, 5 char max?
+//Freezer in basement, fridge1 in Kitchen, fridge2 in office.
 //NOTE
 //The PubSub constructor and HOSTPREFIX MUST be unique on the network.
 ///#define HOSTPREFIX "FRZR"
@@ -59,8 +59,8 @@ char macBuffer[24];             //Holds the last three digits of the MAC, in hex
 //Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
 //Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
 //The PubSub constructor MUST be unique on the network.
-WiFiClient fridge1x;
-PubSubClient client(fridge1x);
+WiFiClient frdge2;
+PubSubClient client(frdge2);
 
 
 
