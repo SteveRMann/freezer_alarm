@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.3.2">
+<eagle version="9.6.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -5008,6 +5008,7 @@ Source: http://www.osram.convergy.de/</description>
 <part name="IC2" library="SamacSys_Parts" deviceset="DS18B20+" device=""/>
 <part name="R1" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="R-US_" device="0207/10" package3d_urn="urn:adsk.eagle:package:6240597/1" value="4K7"/>
 <part name="LED2" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:6240538/1"/>
+<part name="R2" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="R-US_" device="0207/10" package3d_urn="urn:adsk.eagle:package:6240597/1" value="1K"/>
 </parts>
 <sheets>
 <sheet>
@@ -5043,6 +5044,10 @@ Source: http://www.osram.convergy.de/</description>
 <instance part="LED2" gate="G$1" x="91.44" y="127" smashed="yes">
 <attribute name="NAME" x="94.996" y="122.428" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="97.155" y="122.428" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R2" gate="G$1" x="91.44" y="114.3" smashed="yes" rot="R270">
+<attribute name="NAME" x="92.9386" y="118.11" size="1.778" layer="95" rot="R270"/>
+<attribute name="VALUE" x="88.138" y="118.11" size="1.778" layer="96" rot="R270"/>
 </instance>
 </instances>
 <busses>
@@ -5095,13 +5100,13 @@ Source: http://www.osram.convergy.de/</description>
 <segment>
 <pinref part="W1" gate="G$1" pin="GND"/>
 <wire x1="139.7" y1="121.92" x2="144.78" y2="121.92" width="0.1524" layer="91"/>
-<pinref part="LED2" gate="G$1" pin="C"/>
 <wire x1="144.78" y1="121.92" x2="147.32" y2="121.92" width="0.1524" layer="91"/>
-<wire x1="91.44" y1="121.92" x2="91.44" y2="101.6" width="0.1524" layer="91"/>
 <wire x1="91.44" y1="101.6" x2="144.78" y2="101.6" width="0.1524" layer="91"/>
 <wire x1="144.78" y1="101.6" x2="144.78" y2="121.92" width="0.1524" layer="91"/>
 <junction x="144.78" y="121.92"/>
 <label x="147.32" y="121.92" size="1.778" layer="95" xref="yes"/>
+<pinref part="R2" gate="G$1" pin="2"/>
+<wire x1="91.44" y1="109.22" x2="91.44" y2="101.6" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="SDA" class="0">
@@ -5160,6 +5165,13 @@ Source: http://www.osram.convergy.de/</description>
 <pinref part="W1" gate="G$1" pin="D5"/>
 <pinref part="LED2" gate="G$1" pin="A"/>
 <wire x1="104.14" y1="129.54" x2="91.44" y2="129.54" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$2" class="0">
+<segment>
+<pinref part="LED2" gate="G$1" pin="C"/>
+<pinref part="R2" gate="G$1" pin="1"/>
+<wire x1="91.44" y1="121.92" x2="91.44" y2="119.38" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
