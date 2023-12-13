@@ -44,6 +44,8 @@ void setup_wifi() {
   //"4C:11:AE:0D:83:86" becomes "0D8386" in macBuffer.
   WiFi.macAddress(mac);
   snprintf(macBuffer, sizeof(macBuffer), "%02X%02X%02X", mac[3], mac[4], mac[5]);
+  //Full MAC address
+  snprintf(macAddress, sizeof(macAddress), "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 
   //Build hostName from hostNamePrefix + last three bytes of the MAC address.
   strcpy(hostName, hostNamePrefix);

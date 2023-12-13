@@ -1,5 +1,5 @@
-#define SKETCH_NAME "freezerAlarm.ino"
-#define SKETCH_VERSION "2.2"
+#define SKETCH_NAME __FILE__
+#define SKETCH_VERSION "2.4"
 
 
 /*
@@ -14,14 +14,11 @@
      V2.1 - Added OTA
      V2.1 - Added Ticker to flash red LED if the temperature rises above the alarmSetPoint
      V2.2 - Added MQTT topic to set alarm.
+     V2.4 - Added MAC address to mqtt publish
 
      Todo:
      Publish alarm status over MQTT
      
-
-
-
-
 */
 
 
@@ -39,6 +36,7 @@ Ticker REDFlipper;              //Ticker object
 
 //setup_wifi vars
 char macBuffer[24];             //Holds the last three digits of the MAC, in hex.
+char macAddress[24];            //Holds the MAC address
 char hostNamePrefix[] = HOSTPREFIX;
 char hostName[24];              //Holds hostNamePrefix + the last three bytes of the MAC address.
 
@@ -55,6 +53,7 @@ const char *alarmTopic = NODENAME "/cmnd/alarm";       //Payload is the alarm tr
 const char *statusTopic = NODENAME "/status";
 const char *fahrenheightTopic = NODENAME "/temp/f";
 const char *centigradeTopic = NODENAME "/temp/c";
+const char *macAddressTopic = NODENAME "/mac";
 const char *connectName =  NODENAME "1";                  //Must be unique on the network
 const char *mqttServer = mqtt_server;                     //Local broker defined in Kaywinnet.h
 const int mqttPort = 1883;
@@ -81,60 +80,6 @@ float alarmSetPoint = 23.0;         //Default value, To be set by MQTT.
 //=================================== redToggle() ===================================
 void redToggle() {
   digitalWrite(RED_LED, !digitalRead(RED_LED));     //Toggle the LED
-}
-
-
-//=================================== setup() ===================================
-void setup() {
-  pinMode(BLUE_LED, OUTPUT);
-  pinMode(RED_LED, OUTPUT);
-
-  //Turn on the LEDS while starting up.
-  digitalWrite(BLUE_LED, LEDON);
-  digitalWrite(RED_LED, LEDON);
-
-  beginSerial();
-  setup_wifi();
-  start_OTA();
-
-
-  /*
-    //Flip the RED LED every half second, for five seconds. (Demo)
-    REDFlipper.attach(0.5, redToggle);
-    delay(5000);
-    REDFlipper.detach();
-  */
-
-  //Call the setServer method on the PubSubClient object, passing as first argument the
-  //address and as second the port.
-  client.setServer(mqttServer, mqttPort);
-  mqttConnect();
-
-  //Show the topics:
-  Serial.print(F("alarmTopic= "));
-  Serial.println(alarmTopic);
-  Serial.print(F("fahrenheightTopic= "));
-  Serial.println(fahrenheightTopic);
-  Serial.print(F("centigradeTopic= "));
-  Serial.println(centigradeTopic);
-  Serial.println();
-
-
-
-  display.init();
-  display.flipScreenVertically();
-  display.setFont(ArialMT_Plain_10);
-  display.setTextAlignment(TEXT_ALIGN_LEFT);
-  display.setBrightness(16);
-
-  display.clear();                                      //clear the display
-  display.setTextAlignment(TEXT_ALIGN_LEFT);
-  display.drawString(0, 0, SKETCH_NAME);
-  display.display();
-
-  //Turn off the LEDS
-  digitalWrite(BLUE_LED, LEDOFF);
-  digitalWrite(RED_LED, LEDOFF);
 }
 
 
