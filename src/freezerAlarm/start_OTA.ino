@@ -8,9 +8,7 @@ void start_OTA() {
 
   //Hostname defaults to esp8266 - [MAC address]
   //ArduinoOTA.setHostname("tree_02");
-  ///ArduinoOTA.setHostname(hostName);
-  ///Serial.print(F("(StartOTA) hostName= "));
-  ///Serial.println(hostName);
+  ArduinoOTA.setHostname(hostName);
 
   ArduinoOTA.onStart([]() {
     String type;

@@ -1,10 +1,6 @@
 #define SKETCH_NAME "freezerAlarm.ino"
-#define SKETCH_VERSION "2.3"
-#define NODENAME "fridge2"          //Give this node a unique name, 5 char max?
-//Freezer in basement, fridge1 in Kitchen, fridge2 in office.
-//NOTE
-//The PubSub constructor and HOSTPREFIX MUST be unique on the network.
-///#define HOSTPREFIX "FRZR"
+#define SKETCH_VERSION "2.2"
+
 
 /*
      Board: Lolin(Wemos) D1 R2 & Mini
@@ -18,12 +14,10 @@
      V2.1 - Added OTA
      V2.1 - Added Ticker to flash red LED if the temperature rises above the alarmSetPoint
      V2.2 - Added MQTT topic to set alarm.
-     V2.3 - Changed wifi to wifiMulti
-            NOTE- There is no way to set the hostname in the wifiMulti library.
 
      Todo:
      Publish alarm status over MQTT
-
+     
 
 
 
@@ -32,8 +26,9 @@
 
 
 #include <OneWire.h>            //Driver for DS18S20, DS18B20, DS1822 Temperature Sensor.
-#include <SSD1306Wire.h>        //Wire.h includes OLEDDisplay.h which contains the command definitions.
+#include "SSD1306Wire.h"        //Wire.h includes OLEDDisplay.h which contains the command definitions.
 
+#define HOSTPREFIX "FRZR"
 #include "ESP8266WiFi.h"        //Not needed if also using the Arduino OTA Library...
 #include <Kaywinnet.h>          //WiFi credentials
 #include <PubSubClient.h>       //connect to a MQTT broker and publish/subscribe messages in topics.
@@ -42,34 +37,26 @@
 #include <Ticker.h>
 Ticker REDFlipper;              //Ticker object
 
-
-//--------------- WiFiMulti declarations ---------------
-#include <ESP8266WiFiMulti.h>
-ESP8266WiFiMulti wifiMulti;
-
-// WiFi connect timeout per AP. Increase when connecting takes longer.
-const uint32_t connectTimeoutMs = 5000;
-
 //setup_wifi vars
 char macBuffer[24];             //Holds the last three digits of the MAC, in hex.
-///char hostNamePrefix[] = HOSTPREFIX;
-///char hostName[24];              //Holds hostNamePrefix + the last three bytes of the MAC address.
-//------------------------------------------------------
+char hostNamePrefix[] = HOSTPREFIX;
+char hostName[24];              //Holds hostNamePrefix + the last three bytes of the MAC address.
+
 
 //Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
 //Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
-//The PubSub constructor MUST be unique on the network.
-WiFiClient frdge2;
-PubSubClient client(frdge2);
+//The constructor MUST be unique on the network.
+WiFiClient frzrClient;
+PubSubClient client(frzrClient);
 
 
-
+#define NODENAME "frzr"                                //Give this node a name
 const char *alarmTopic = NODENAME "/cmnd/alarm";       //Payload is the alarm trigger point.
 const char *statusTopic = NODENAME "/status";
 const char *fahrenheightTopic = NODENAME "/temp/f";
 const char *centigradeTopic = NODENAME "/temp/c";
-const char *connectName =  NODENAME "1";                  //NODENAME is unique on the network
-const char *mqttServer = MQTT_SERVER;                     //Local broker defined in Kaywinnet.h
+const char *connectName =  NODENAME "1";                  //Must be unique on the network
+const char *mqttServer = mqtt_server;                     //Local broker defined in Kaywinnet.h
 const int mqttPort = 1883;
 
 
@@ -107,8 +94,7 @@ void setup() {
   digitalWrite(RED_LED, LEDON);
 
   beginSerial();
-  //setup_wifi();
-  setup_wifiMulti();
+  setup_wifi();
   start_OTA();
 
 
@@ -206,7 +192,6 @@ void loop(void) {
   ds.write(0x44, 1);                //Start conversion
   delay(1000);
   //present = ds.reset();
-  ds.reset();
   ds.select(addr);
   ds.write(0xBE);
 
@@ -232,7 +217,7 @@ void loop(void) {
 
   celsius = (float)raw / 16.0;
   fahrenheit = celsius * 1.8 + 32.0;
-  Serial.print(F(NODENAME" Temperature = "));
+  Serial.print(F("  Temperature = "));
   Serial.print(celsius);
   Serial.print(F(" Celsius, "));
   Serial.print(fahrenheit);
@@ -254,8 +239,6 @@ void loop(void) {
   char result[6];
   dtostrf(celsius, 4, 2, result);
   client.publish(centigradeTopic, result);
-  dtostrf(fahrenheit, 4, 2, result);
-  client.publish(fahrenheightTopic, result);
 
   //Alarm?
   if (celsius > alarmSetPoint) {
