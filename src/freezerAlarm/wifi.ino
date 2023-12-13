@@ -23,12 +23,12 @@ void setup_wifi() {
 
   Serial.println(F("\n"));
   Serial.print(F("Connecting to "));
-  Serial.println(IOT_SSID);
+  Serial.println(MY_SSID);
 
 
   WiFi.mode(WIFI_STA);
   //WiFi.begin(MYSSID, MYPASSWORD);
-  WiFi.begin(IOT_SSID, IOT_PASSWORD);
+  WiFi.begin(MY_SSID, MY_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(WiFi.status());
